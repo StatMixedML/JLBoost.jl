@@ -14,9 +14,10 @@ feature_importance(jlt::JLBoostTreeModel, X, y::AbstractVector) = begin
 end
 
 feature_importance(jlt::JLBoostTreeModel, df) = begin
-    if (typeof(df[!, jlt.target]) <: CategoricalVector) & (jlt.loss isa LogitLogLoss)
+    df = columntable(df)
+    if (typeof(getproperty(df, jlt.target)) <: CategoricalVector) & (jlt.loss isa LogitLogLoss)
         dfc = copy(df)
-        dfc[!, jlt.target] = 2 .- categorical(dfc[!, jlt.target]).refs
+        dfc[!, jlt.target] = 2 .- categorical(getproperty(df, jlt.target)).refs
         return feature_importance(trees(jlt), dfc, jlt.loss, jlt.target)
     end
     feature_importance(trees(jlt), df, jlt.loss, jlt.target)
