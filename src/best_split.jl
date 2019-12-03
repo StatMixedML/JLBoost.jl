@@ -55,16 +55,16 @@ end
 
 Assume that f, t, p are iterable and that they are sorted. Intended for advance users only
 """
-function _best_split(loss::LogitLogLoss, feature::AbstractVector, target::CategoricalArray, warmstart::AbstractVector, lambda::Number, gamma::Number; kwargs...)
+function _best_split(loss::LogitLogLoss, feature::AbstractVector, target::CategoricalVector, warmstart::AbstractVector, lambda::Number, gamma::Number; kwargs...)
 	@assert length(levels(target)) == 2
 
-	best_split(loss, feature, target.refs .- 1, warmstart, lambda, gamma; kwargs...)
+	best_split(loss, feature, 2 .- target.refs, warmstart, lambda, gamma; kwargs...)
 end
 
 function _best_split(loss::LogitLogLoss, feature::AbstractVector, target::SubArray{A, B, C, D, E}, warmstart::AbstractVector, lambda::Number, gamma::Number; kwargs...) where {A, B, C<:CategoricalArray, D, E}
 	@assert length(levels(target)) == 2
 
-	best_split(loss, feature, mappedarray(x->x.level, target), warmstart, lambda, gamma; kwargs...)
+	best_split(loss, feature, mappedarray(x->2 - x.level, target), warmstart, lambda, gamma; kwargs...)
 end
 
 
