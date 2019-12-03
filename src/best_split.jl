@@ -13,7 +13,6 @@ Find the best (binary) split point by optimizing ∑ loss(warmstart + δx, targe
 
 Does not assume that Feature, target, and warmstart sorted and will sort them for you.
 """
-
 function best_split(loss, df, feature::Symbol, target::Symbol, warmstart::AbstractVector, lambda, gamma; verbose = false, kwargs...)
 	 @assert Tables.istable(df)
 
