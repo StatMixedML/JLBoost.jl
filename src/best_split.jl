@@ -85,13 +85,6 @@ function _best_split(loss, feature, target, warmstart, lambda::Number, gamma::Nu
     rweight::Float64 = 0.0
     best_gain::Float64 = typemin(Float64)
 
-    # if length(feature) == 1
-    # 	no_split = max_cg^2 /(max_ch + lambda)
-    # 	gain = no_split - gamma
-    # 	cutpt = 0
-    # 	lweight = -cg[end]/(ch[end]+lambda)
-    # 	rweight = -cg[end]/(ch[end]+lambda)
-	# else
 	for (i, (f, cg, ch)) in enumerate(zip(drop(feature,1) , @view(cg[1:end-1]), @view(ch[1:end-1])))
 		if f != last_feature
 			left_split = cg^2 /(ch + lambda)
@@ -107,7 +100,6 @@ function _best_split(loss, feature, target, warmstart, lambda::Number, gamma::Nu
 			last_feature = f
 		end
 	end
-	# end
 
 	# set the split at the point at the end
     split_at = feature[end]

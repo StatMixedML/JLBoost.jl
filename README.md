@@ -212,7 +212,7 @@ MLJJLBoost.JLBoostClassifier(loss = JLBoost.LogitLogLoss(),
                              min_child_weight = 1,
                              lambda = 0,
                              gamma = 0,
-                             colsample_bytree = 1,) @ 1…40
+                             colsample_bytree = 1,) @ 3…09
 ````
 
 
@@ -355,19 +355,19 @@ jlboost(df, target, features, warm_start, loss; max_depth=2) # default max_depth
 
 ````
 JLBoost.JLBoostTrees.JLBoostTreeModel(JLBoost.JLBoostTrees.JLBoostTree[
-   -- x <= 48.46506111985791
-     -- x <= 22.538674324075213
-       ---- weight = 24.909767874932513
+   -- x <= 48.19219268365611
+     -- x <= 24.051649634579665
+       ---- weight = 27.02393961518262
 
-     -- x > 22.538674324075213
-       ---- weight = 70.22774285333539
+     -- x > 24.051649634579665
+       ---- weight = 71.06038163953716
 
-   -- x > 48.46506111985791
-     -- x <= 74.58743339436928
-       ---- weight = 126.45279819799187
+   -- x > 48.19219268365611
+     -- x <= 73.98012706579316
+       ---- weight = 124.59997404968306
 
-     -- x > 74.58743339436928
-       ---- weight = 177.0348452615354
+     -- x > 73.98012706579316
+       ---- weight = 176.42079606363237
 ], LossFunctions.LPDistLoss{2}(), :y)
 ````
 
@@ -448,4 +448,9 @@ rm("iris.jdf", force=true, recursive=true)
 
 Currently has a CPU implementation of the `xgboost` binary boosting algorithm as described in the original paper. I am trying to implement the algorithms in the original `xgboost` paper. I want to implement the algorithms mentioned in LigthGBM and Catboost and to port them to GPUs.
 
-There is a similar project called [JuML.jl](https://github.com/Statfactory/JuML.jl).
+**Similar projects**
+
+| Name | URL | Status |
+| -- | -- | -- |
+| EvoTrees.jl | https://github.com/Evovest/EvoTrees.jl | Development in progress |
+| JuML.jl | https://github.com/Statfactory/JuML.jl | Development stalled |
