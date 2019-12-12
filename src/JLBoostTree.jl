@@ -1,9 +1,9 @@
 module JLBoostTrees
 
-import Base: show, *, print, println, +
+import Base: show, *, print, println, +, getproperty
 
 export JLBoostTree, JLBoostTreeModel, show, trees
-export WeightedJLBoostTree, *, AbstractJLBoostTree, print, println, vcat
+export WeightedJLBoostTree, *, AbstractJLBoostTree, print, println, vcat, getproperty
 
 abstract type AbstractJLBoostTree end
 

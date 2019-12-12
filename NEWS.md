@@ -1,3 +1,6 @@
+## v0.1.4
+Fixed AUC computation which was slightly off
+
 ## v0.1.3
 Supporting DataFrames v0.20
 

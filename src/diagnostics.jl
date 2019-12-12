@@ -1,12 +1,8 @@
-export AUC, gini, CrossEntropy
+export AUC, gini
 
 using DataFrames: by, DataFrame, sort!
 using CategoricalArrays: CategoricalVector
-
-import MLJBase: CrossEntropy
-
-CrossEntropy(x, y::CategoricalVector) = CrossEntropy(x, y.refs .- 1)
-
+using SortingLab: fsortperm
 
 function AUC_plot_data(score, target::CategoricalVector;  kwargs...)
     @assert length(levels(target)) == 2
@@ -15,23 +11,21 @@ end
 
 AUC_plot_data(score, target;  kwargs...) = _AUC_plot_data(score, target;  kwargs...)
 
-function _AUC_plot_data(score, target;  plotauc = false)
-    tmpdf = by(
-        DataFrame(score = score, target = target),
-        :score,
-        df1->DataFrame(ntarget = sum(df1[!,:target]), n = size(df1)[1])
-    )
-    sort!(tmpdf,:score)
-    nrows = length(score)
-    cutarget = accumulate(+, tmpdf[!,:ntarget]) ./ sum(tmpdf[!,:ntarget])
-    cu = accumulate(+, tmpdf[!,:n]) ./ sum(tmpdf[!,:n])
+function _AUC_plot_data(pred, target;  plotauc = false)
+    @assert length(pred) == length(target)
+    s = fsortperm(pred)
+    ts = @view target[s]
+    FN = cumsum(ts)
+    TP = sum(ts) .- FN
+    TPR = TP ./ (TP .+ FN)
 
-    if plotauc
-        plot(vcat(0,cu), vcat(0,cutarget))
-        plot!([0,1],[0,1])
-    end
+    FP = (1:length(ts)) .- FN
+    TN = (length(target) - sum(target)) .- FP
+    FPR = FP ./(FP .+ TN)
 
-    cu, cutarget
+    sum((TPR[1:end-1] .+ TPR[2:end]) .* diff(FPR) ./ 2)
+
+    FPR, TPR
 end
 
 """
@@ -41,7 +35,7 @@ Return the AUC. To generate a plot set `plotauc=true`.
 """
 function AUC(score, target; kwargs...)
     cu, cutarget = AUC_plot_data(score, target; kwargs...)
-    sum((cutarget[2:end] .+ cutarget[1:end-1]).*(cu[2:end].-cu[1:end-1])./2)
+    sum((cutarget[2:end] .+ cutarget[1:end-1]) .* diff(cu) ./ 2)
 end
 
 """
