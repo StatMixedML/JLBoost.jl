@@ -11,9 +11,9 @@ export best_split
 
 Find the best (binary) split point by optimizing ∑ loss(warmstart + δx, target) using order-2 Taylor series expexpansion.
 
-Does not assume that Feature, target, and warmstart sorted and will sort them for you.
+Does not assume that Feature, target, and warmstart are sorted and will sort them for you.
 """
-function best_split(loss, df, feature::Symbol, target::Symbol, warmstart::AbstractVector, lambda, gamma; verbose = false, kwargs...)
+function best_split(loss, df, feature::Symbol, target::Symbol, warmstart::AbstractVector=fill(0.0, nrow(df)), lambda=0.0, gamma=0.0; verbose = false, kwargs...)
 	 @assert Tables.istable(df)
 
 	 if verbose
@@ -85,6 +85,7 @@ function _best_split(loss, feature, target, warmstart, lambda::Number, gamma::Nu
     best_gain::Float64 = typemin(Float64)
 
 	for (i, (f, cg, ch)) in enumerate(zip(drop(feature,1) , @view(cg[1:end-1]), @view(ch[1:end-1])))
+		#print(f)
 		if f != last_feature
 			left_split = cg^2 /(ch + lambda)
 			right_split = (max_cg-cg)^(2) / ((max_ch - ch) + lambda)
