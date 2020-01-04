@@ -1,18 +1,11 @@
 module JLBoostTrees
 
-<<<<<<< Updated upstream
-import Base: show, *, print, println, +, getproperty
-
-export JLBoostTree, JLBoostTreeModel, show, trees
-export WeightedJLBoostTree, *, AbstractJLBoostTree, print, println, vcat, getproperty
-=======
 import Base: vcat
 import Base: show, *, print, println, +, getproperty
 
 export JLBoostTree, JLBoostTreeModel, show, trees
 export WeightedJLBoostTree, *, AbstractJLBoostTree, print, println, vcat
 export getproperty
->>>>>>> Stashed changes
 
 abstract type AbstractJLBoostTree end
 
